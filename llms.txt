@@ -1,0 +1,31 @@
+# Pnyx
+
+Pnyx (pronounced "p-nix") is an open civic protocol for turning public problems into evidence-backed decisions, accountable action, and auditable public memory.
+
+## Ethical root
+
+We love humanity.
+
+Technology serves society. Citizens retain judgment.
+
+## Civic Loop
+
+1. Raise the issue.
+2. Assemble human, language-model, and hybrid skills in explicit roles.
+3. Map claims, evidence, uncertainty, costs, rights, and capture risks.
+4. Deliberate publicly.
+5. Decide through human civic judgment and execute under accountable constraints.
+6. Preserve outcomes as auditable public memory.
+
+## Canonical links
+
+- Public website: https://pnyx.dev/
+- Protocol and reference implementation: https://github.com/pikos-apikos/pnyx
+- Website source: https://github.com/pikos-apikos/pnyx.dev
+
+## Core constraints
+
+- Political judgment is not delegated to a model.
+- Disagreement, uncertainty, minority positions, and rejected warnings remain visible.
+- The rules and failures of Pnyx pass through the same public loop.
+- Publicly funded civic work returns to public memory.

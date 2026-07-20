@@ -17,9 +17,13 @@ Technology serves society. Citizens retain judgment.
 5. Decide through human civic judgment and execute under accountable constraints.
 6. Preserve outcomes as auditable public memory.
 
+## Public website languages
+
+- English: https://pnyx.dev/
+- Greek: https://pnyx.dev/el/
+
 ## Canonical links
 
-- Public website: https://pnyx.dev/
 - Protocol and reference implementation: https://github.com/pikos-apikos/pnyx
 - Website source: https://github.com/pikos-apikos/pnyx.dev
 

@@ -32,8 +32,8 @@ jobs:
 
           root = Path('.')
           required = {
-              'index.html', '404.html', 'styles.css', 'favicon.svg',
-              'robots.txt', 'sitemap.xml', 'llms.txt', '_headers'
+              'index.html', 'el/index.html', '404.html', 'styles.css',
+              'favicon.svg', 'robots.txt', 'sitemap.xml', 'llms.txt', '_headers'
           }
           missing = sorted(name for name in required if not (root / name).is_file())
           if missing:
@@ -46,36 +46,55 @@ jobs:
                   self.links = []
                   self.scripts = []
                   self.images = []
+                  self.language = None
+                  self.alternates = {}
 
               def handle_starttag(self, tag, attrs):
                   values = dict(attrs)
+                  if tag == 'html':
+                      self.language = values.get('lang')
                   if 'id' in values:
                       self.ids.add(values['id'])
                   if tag in {'a', 'link'} and values.get('href'):
                       self.links.append(values['href'])
+                  if tag == 'link' and values.get('rel') == 'alternate' and values.get('hreflang'):
+                      self.alternates[values['hreflang']] = values.get('href')
                   if tag == 'script' and values.get('src'):
                       self.scripts.append(values['src'])
                   if tag == 'img' and values.get('src'):
                       self.images.append(values['src'])
 
           documents = {}
-          for filename in ('index.html', '404.html'):
+          for filename in ('index.html', 'el/index.html', '404.html'):
               parser = Document()
               parser.feed((root / filename).read_text(encoding='utf-8'))
               documents[filename] = parser
 
-          index = documents['index.html']
-          for anchor in ('main', 'loop', 'principles'):
-              if anchor not in index.ids:
-                  raise SystemExit(f"index.html is missing required anchor #{anchor}")
+          expected_languages = {'index.html': 'en', 'el/index.html': 'el'}
+          expected_alternates = {
+              'en': 'https://pnyx.dev/',
+              'el': 'https://pnyx.dev/el/',
+              'x-default': 'https://pnyx.dev/',
+          }
 
-          for href in index.links:
-              if href.startswith('#') and href[1:] not in index.ids:
-                  raise SystemExit(f"Broken internal anchor: {href}")
-              if href.startswith('/') and href != '/':
-                  target = href.split('#', 1)[0].lstrip('/')
-                  if target and not (root / target).exists():
-                      raise SystemExit(f"Broken root-relative asset: {href}")
+          for filename, language in expected_languages.items():
+              document = documents[filename]
+              if document.language != language:
+                  raise SystemExit(f"{filename} must declare lang={language!r}")
+              for anchor in ('main', 'story', 'loop', 'principles'):
+                  if anchor not in document.ids:
+                      raise SystemExit(f"{filename} is missing required anchor #{anchor}")
+              if document.alternates != expected_alternates:
+                  raise SystemExit(f"{filename} has incomplete hreflang links: {document.alternates}")
+
+          for filename, document in documents.items():
+              for href in document.links:
+                  if href.startswith('#') and href[1:] not in document.ids:
+                      raise SystemExit(f"Broken internal anchor in {filename}: {href}")
+                  if href.startswith('/') and href not in {'/', '/el/'}:
+                      target = href.split('#', 1)[0].lstrip('/')
+                      if target and not (root / target).exists():
+                          raise SystemExit(f"Broken root-relative path in {filename}: {href}")
 
           external_assets = []
           for parser in documents.values():
@@ -87,9 +106,10 @@ jobs:
 
           sitemap = ET.parse(root / 'sitemap.xml').getroot()
           namespace = {'sm': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
-          locations = [node.text for node in sitemap.findall('.//sm:loc', namespace)]
-          if 'https://pnyx.dev/' not in locations:
-              raise SystemExit('sitemap.xml does not contain https://pnyx.dev/')
+          locations = {node.text for node in sitemap.findall('.//sm:loc', namespace)}
+          expected_locations = {'https://pnyx.dev/', 'https://pnyx.dev/el/'}
+          if locations != expected_locations:
+              raise SystemExit(f"sitemap.xml locations differ: {locations}")
 
           robots = (root / 'robots.txt').read_text(encoding='utf-8')
           if 'https://pnyx.dev/sitemap.xml' not in robots:
@@ -99,5 +119,5 @@ jobs:
           if 'https://github.com/pikos-apikos/pnyx' not in llms:
               raise SystemExit('llms.txt does not link to the canonical protocol repository')
 
-          print('Static site validation passed.')
+          print('Bilingual static site validation passed.')
           PY

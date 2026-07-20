@@ -1,0 +1,103 @@
+name: Validate site
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Validate static site
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urlparse
+          import xml.etree.ElementTree as ET
+
+          root = Path('.')
+          required = {
+              'index.html', '404.html', 'styles.css', 'favicon.svg',
+              'robots.txt', 'sitemap.xml', 'llms.txt', '_headers'
+          }
+          missing = sorted(name for name in required if not (root / name).is_file())
+          if missing:
+              raise SystemExit(f"Missing required files: {', '.join(missing)}")
+
+          class Document(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.ids = set()
+                  self.links = []
+                  self.scripts = []
+                  self.images = []
+
+              def handle_starttag(self, tag, attrs):
+                  values = dict(attrs)
+                  if 'id' in values:
+                      self.ids.add(values['id'])
+                  if tag in {'a', 'link'} and values.get('href'):
+                      self.links.append(values['href'])
+                  if tag == 'script' and values.get('src'):
+                      self.scripts.append(values['src'])
+                  if tag == 'img' and values.get('src'):
+                      self.images.append(values['src'])
+
+          documents = {}
+          for filename in ('index.html', '404.html'):
+              parser = Document()
+              parser.feed((root / filename).read_text(encoding='utf-8'))
+              documents[filename] = parser
+
+          index = documents['index.html']
+          for anchor in ('main', 'loop', 'principles'):
+              if anchor not in index.ids:
+                  raise SystemExit(f"index.html is missing required anchor #{anchor}")
+
+          for href in index.links:
+              if href.startswith('#') and href[1:] not in index.ids:
+                  raise SystemExit(f"Broken internal anchor: {href}")
+              if href.startswith('/') and href != '/':
+                  target = href.split('#', 1)[0].lstrip('/')
+                  if target and not (root / target).exists():
+                      raise SystemExit(f"Broken root-relative asset: {href}")
+
+          external_assets = []
+          for parser in documents.values():
+              for asset in parser.scripts + parser.images:
+                  if urlparse(asset).scheme in {'http', 'https'}:
+                      external_assets.append(asset)
+          if external_assets:
+              raise SystemExit(f"Unexpected external runtime assets: {external_assets}")
+
+          sitemap = ET.parse(root / 'sitemap.xml').getroot()
+          namespace = {'sm': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          locations = [node.text for node in sitemap.findall('.//sm:loc', namespace)]
+          if 'https://pnyx.dev/' not in locations:
+              raise SystemExit('sitemap.xml does not contain https://pnyx.dev/')
+
+          robots = (root / 'robots.txt').read_text(encoding='utf-8')
+          if 'https://pnyx.dev/sitemap.xml' not in robots:
+              raise SystemExit('robots.txt does not reference the canonical sitemap')
+
+          llms = (root / 'llms.txt').read_text(encoding='utf-8')
+          if 'https://github.com/pikos-apikos/pnyx' not in llms:
+              raise SystemExit('llms.txt does not link to the canonical protocol repository')
+
+          print('Static site validation passed.')
+          PY

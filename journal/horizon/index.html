@@ -46,14 +46,20 @@
           <p>The conversational history matters because Git records the resulting files and commits, but not the reasoning, jokes, corrections, or human judgment that produced them.</p>
         </section>
         <section>
-          <h2>The initial direction</h2>
-          <p>The first proposal placed the citizens at the center: an earth-and-rock assembly seen from within, without marble spectacle, flags, screens, holograms, or generic “AI ancient Athens.” The speaker was deliberately small and the civic body large.</p>
-          <p>That abstraction was useful, but incomplete.</p>
+          <p class="eyebrow">Topic 1 · Research and production</p>
+          <h2>Describing the place and producing the image</h2>
+          <p><strong>Goal:</strong> produce an image for pnyx.dev that describes, as faithfully as possible, the actual place of the Pnyx—not a generic image of “ancient Athens.”</p>
+          <p><strong>The model's work:</strong> I studied the archaeological source PDF and translated its evidence into visual constraints: natural rock and earth, a gently concave slope, a human-scale speaker's platform, and an assembly without marble theatrical spectacle. From those constraints I formed the prompt and generated the first composition.</p>
+          <p><strong>First result:</strong> an earthbound assembly seen from within. The speaker was deliberately small and the civic body large. Flags, screens, holograms, invented temples, and familiar AI clichés were excluded.</p>
+          <p><strong>Human evaluation:</strong> the historical abstraction was useful, but it had not yet found the central meaning.</p>
         </section>
         <section>
-          <h2>The human correction</h2>
+          <p class="eyebrow">Topic 1 · Correction and second production</p>
+          <h2>The horizon becomes the edge</h2>
           <blockquote><p>“The important thing here is the horizon. I know you by the edge.”</p></blockquote>
-          <p>The horizon stopped being background and became the meaning of the image: the bright edge where land and sky meet. The assembly and the speaker now face it together. The center of gravity moved from the person speaking to a shared direction beyond every individual.</p>
+          <p><strong>Human intervention:</strong> the horizon was identified as the essential element of the composition, not as background.</p>
+          <p><strong>The model's work:</strong> I reframed the visual idea and generated a second version in which the assembly and the speaker face together toward the bright line where land and sky meet.</p>
+          <p><strong>Result:</strong> the center of gravity moved from the person speaking toward a shared direction beyond every individual. This was the image selected for the site.</p>
         </section>
         <section>
           <h2>What was rejected</h2>
@@ -63,7 +69,9 @@
           <p>The model can propose abstractions; the human remains responsible for cutting their arbitrary edges.</p>
         </section>
         <section>
-          <h2>What entered the site</h2>
+          <p class="eyebrow">Stage 2 · Application</p>
+          <h2>Adapting and integrating it into pnyx.dev</h2>
+          <p><strong>The model's work:</strong> I located the site's separate repository, inspected its structure and existing layout, optimized the assets, and prepared the change on an isolated branch and pull request. After the observation that the titles were too large, I adjusted the entire display scale and updated the same PR.</p>
           <ul>
             <li>The horizon composition became the landing-page hero.</li>
             <li>The source PNG was converted to an 88 KB WebP and a social-preview JPEG.</li>
@@ -81,8 +89,12 @@
           </ul>
         </section>
         <section class="record-note">
-          <h2>Why publish this</h2>
-          <p>Pnyx is being produced through the kind of visible loop it proposes: human intention, model contribution, criticism, correction, artifact, implementation, and public memory. The polished image alone cannot show that loop. This entry can.</p>
+          <p class="eyebrow">Stage 3 · Applying the workflow</p>
+          <h2>The work becomes public memory</h2>
+          <p><strong>The next request:</strong> make visible not only the final image and Git diff, but also the work that produced them.</p>
+          <p><strong>The model's first failure:</strong> I arbitrarily called the available material the “first complete chapter.” The human correction set the actual boundary: this is one new entry and a partial record, because the full history is not present in this conversation.</p>
+          <p><strong>Applying the workflow:</strong> topic and sources → model work → human criticism → new production → application to the site → public record. Pnyx is thus being produced through the same visible loop it proposes.</p>
+          <p>The final image shows the result. This entry shows the work.</p>
         </section>
       </div>
     </article>

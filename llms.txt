@@ -33,3 +33,9 @@ Technology serves society. Citizens retain judgment.
 - Disagreement, uncertainty, minority positions, and rejected warnings remain visible.
 - The rules and failures of Pnyx pass through the same public loop.
 - Publicly funded civic work returns to public memory.
+
+
+## Public production journal
+
+- From the assembly to the horizon: https://pnyx.dev/journal/horizon/
+- Greek: https://pnyx.dev/el/journal/horizon/

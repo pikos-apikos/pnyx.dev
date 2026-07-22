@@ -103,6 +103,10 @@ a:hover, a:focus-visible { color: var(--color-accent-hover); }
 .nav-menu { margin-left: auto; }
 .nav-menu > summary { display: none; }
 .nav-menu > summary::-webkit-details-marker { display: none; }
+/* A closed <details> hides its contents by default. On desktop the summary is
+   intentionally hidden, so keep the navigation explicitly visible from the
+   first render instead of depending on a resize or script-driven open state. */
+.nav-menu:not([open]) > nav { display: flex; }
 
 nav {
   display: flex;
@@ -418,6 +422,7 @@ footer p { margin: 0; }
     padding-bottom: .7rem;
   }
   .nav-menu { position: relative; }
+  .nav-menu:not([open]) > nav { display: none; }
   .nav-menu > summary {
     display: flex;
     min-height: 42px;

@@ -100,6 +100,10 @@ a:hover, a:focus-visible { color: var(--color-accent-hover); }
   font-weight: 700;
 }
 
+.nav-menu { margin-left: auto; }
+.nav-menu > summary { display: none; }
+.nav-menu > summary::-webkit-details-marker { display: none; }
+
 nav {
   display: flex;
   align-items: center;
@@ -413,8 +417,61 @@ footer p { margin: 0; }
     padding-top: .7rem;
     padding-bottom: .7rem;
   }
-  nav { max-width: 72%; overflow-x: auto; justify-content: flex-end; }
-  nav a[href^="#"] { display: none; }
+  .nav-menu { position: relative; }
+  .nav-menu > summary {
+    display: flex;
+    min-height: 42px;
+    align-items: center;
+    gap: .55rem;
+    padding: .45rem .7rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: var(--color-primary);
+    cursor: pointer;
+    font-size: .875rem;
+    font-weight: 600;
+    list-style: none;
+  }
+  .nav-menu > summary:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+    outline-offset: 2px;
+  }
+  .nav-icon,
+  .nav-icon::before,
+  .nav-icon::after {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform var(--transition), opacity var(--transition);
+  }
+  .nav-icon { position: relative; }
+  .nav-icon::before,
+  .nav-icon::after { position: absolute; left: 0; content: ""; }
+  .nav-icon::before { top: -6px; }
+  .nav-icon::after { top: 6px; }
+  .nav-menu[open] .nav-icon { background: transparent; }
+  .nav-menu[open] .nav-icon::before { top: 0; transform: rotate(45deg); }
+  .nav-menu[open] .nav-icon::after { top: 0; transform: rotate(-45deg); }
+  .nav-menu nav {
+    position: absolute;
+    top: calc(100% + .6rem);
+    right: 0;
+    width: min(82vw, 320px);
+    max-height: calc(100vh - var(--header-height) - 1.5rem);
+    flex-direction: column;
+    align-items: stretch;
+    gap: .2rem;
+    overflow-y: auto;
+    padding: .55rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+  }
+  .nav-menu nav a { padding: .7rem .8rem; }
   main, footer { width: min(calc(100% - 2rem), var(--wide)); }
 }
 

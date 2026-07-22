@@ -1,0 +1,34 @@
+{
+  "title": "Pnyx I controlled view geometry",
+  "status": "reconstructed from the verified production record",
+  "camera": {
+    "placement": "behind and slightly above the audience",
+    "direction_degrees": 47.25,
+    "horizontal_field_of_view_degrees": 94.5,
+    "view_range_degrees": [0.0, 94.5],
+    "projection": "rectilinear"
+  },
+  "assembly_geometry": {
+    "audience_faces": "northeast, down the natural slope",
+    "speaker_faces": "southwest, toward the audience and camera"
+  },
+  "landmarks": [
+    {"name": "Parnitha", "azimuth_degrees": 359.7, "distance_km": 22.5},
+    {"name": "Ancient Agora", "azimuth_degrees": 35.5, "distance_km": 0.5},
+    {"name": "Penteli", "azimuth_degrees": 49.3, "distance_km": 18.9},
+    {"name": "Lycabettus", "azimuth_degrees": 61.2, "distance_km": 2.4},
+    {"name": "Areopagus", "azimuth_degrees": 72.5, "distance_km": 0.4},
+    {"name": "Acropolis", "azimuth_degrees": 93.3, "distance_km": 0.7}
+  ],
+  "sources": [
+    "https://www.ascsa.edu.gr/uploads/media/hesperia/146476.pdf",
+    "https://topostext.org/place/380237BPny",
+    "https://registry.opendata.aws/copernicus-dem/"
+  ],
+  "limitations": [
+    "The hero is an artistic reconstruction, not a geodetic or archaeological document.",
+    "Copernicus GLO-30 is a modern 30 m digital surface model.",
+    "The camera station has an uncertainty of tens of metres.",
+    "This reconstructed JSON preserves the verified parameters; the original sampled DEM array was not retained."
+  ]
+}

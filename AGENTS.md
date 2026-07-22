@@ -52,6 +52,23 @@ This is a dependency-free static site. Do not add a framework, build system, ext
 - Do not silently erase an earlier error from the journal. Record the correction and what changed.
 - Preserve the pronunciation as `Pnyx (pronounced "p-nix")` where pronunciation guidance is needed.
 
+## Adding a journal entry
+
+The journal is the public production memory of the project. Add an entry when the reasoning, evidence, human criticism, rejected direction, correction, or outcome would be lost in a Git diff. Do not create an entry merely to restate a commit.
+
+1. Choose one short, stable, lowercase slug. Create both `/journal/<slug>/index.html` and `/el/journal/<slug>/index.html`; neither language is an optional follow-up.
+2. Start from the structure of an existing entry, but write the record from the available evidence. Do not copy claims, dates, sources, pull-request numbers, or implementation status from the example.
+3. Give each page its own translated title, description, visible publication date, canonical URL, Open Graph metadata, and `en`/`el`/`x-default` alternate links. Use an absolute public URL in social metadata and root-relative URLs for site navigation and assets.
+4. Preserve the actual sequence of work: scope and goal; sources or inputs; model contribution; human judgment and criticism; rejected or failed directions; correction or decision; implementation and outcome; remaining uncertainty. Attribute quoted words and do not invent missing conversation history.
+5. Keep provenance beside the relevant claim. Separate observed facts, source material, derived artifacts, model inferences, and artistic interpretations. If an artifact or rejected candidate no longer exists, say so instead of reconstructing it silently.
+6. Put reusable entry-specific material under `/journal/<slug>/artifacts/`. The Greek entry may link to the same artifacts. Use descriptive filenames and explain what each artifact proves, how it was derived, and any important limitation.
+7. Link to the exact implementation evidence when it exists: the relevant pull request, commit, deployed page, or source artifact. Describe its real state accurately; `opened`, `committed`, `merged`, `deployed`, and `verified live` are different claims.
+8. Make the new entry discoverable in both `sitemap.xml` and `llms.txt`. If navigation or a journal link currently points directly to one entry, review it deliberately so the previous record is not made unreachable by accident.
+9. Validate both language pages: titles and heading hierarchy, canonical and alternate URLs, dates, internal links, fragment IDs, assets, source links, responsive layout, and the relationship between the two versions. Run the repository checks before committing.
+10. When correcting a published entry, preserve the substance of the earlier error and add the correction or revision context. Public memory should show learning, not a silently rewritten past.
+
+Dates describe publication, not when an agent happened to start drafting. Never publish a future or guessed date. If the exact publication date or factual boundary is unknown, stop and ask.
+
 ## Image workflow
 
 Images are part of the public record, not decoration without provenance.

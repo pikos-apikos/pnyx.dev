@@ -18,7 +18,7 @@ The site itself should model those values: claims must be attributable, uncertai
 - `/llms.txt` — machine-readable entry point.
 - `/_headers`, `/robots.txt`, and `/sitemap.xml` — deployment and discovery metadata.
 
-This is a dependency-free static site. Do not add a framework, build system, external font, tracker, client-side dependency, or third-party runtime asset unless the change explicitly requires it and the trade-off is documented.
+This is a dependency-free static site at runtime. `site/build.py` is the deterministic standard-library compiler; `site/content/` contains page-specific semantic content; the root HTML pages are generated artifacts. Do not add a framework, external font, tracker, client-side dependency, or third-party runtime asset unless the change explicitly requires it and the trade-off is documented.
 
 ## Core principles
 
@@ -34,10 +34,10 @@ This is a dependency-free static site. Do not add a framework, build system, ext
 1. Read this file, `README.md`, and every file directly affected by the task.
 2. Inspect the current branch and working tree. Preserve unrelated user changes.
 3. State the intended change and any meaningful assumptions before editing.
-4. Make the smallest coherent change in plain HTML and CSS.
+4. Make the smallest coherent change in the compiler, shared components, or content sources. Do not hand-edit generated HTML.
 5. Keep the English and Greek experiences structurally aligned. Do not use machine-looking literal translation when the surrounding prose has a distinct voice.
 6. When a change represents a meaningful design, research, or governance decision, update the corresponding journal record in both languages.
-7. Validate locally before committing.
+7. Run `python3 site/build.py`, then `python3 site/build.py --check`, and validate locally before committing.
 8. Commit only files in scope, with a terse description of the actual change.
 9. Push to a feature branch and update or open a pull request. Do not push directly to `main` unless the user explicitly requests it.
 10. Verify the deployed or preview URL before saying that a production change is live. A commit, merged PR, and deployment are different states.
@@ -56,7 +56,7 @@ This is a dependency-free static site. Do not add a framework, build system, ext
 
 The journal is the public production memory of the project. Add an entry when the reasoning, evidence, human criticism, rejected direction, correction, or outcome would be lost in a Git diff. Do not create an entry merely to restate a commit.
 
-1. Choose one short, stable, lowercase slug. Create both `/journal/<slug>/index.html` and `/el/journal/<slug>/index.html`; neither language is an optional follow-up.
+1. Choose one short, stable, lowercase slug. Add both languages to the compiler page registry and create their semantic sources under `site/content/`; neither language is an optional follow-up. The compiler must export `/journal/<slug>/index.html` and `/el/journal/<slug>/index.html`.
 2. Start from the structure of an existing entry, but write the record from the available evidence. Do not copy claims, dates, sources, pull-request numbers, or implementation status from the example.
 3. Give each page its own translated title, description, visible publication date, canonical URL, Open Graph metadata, and `en`/`el`/`x-default` alternate links. Use an absolute public URL in social metadata and root-relative URLs for site navigation and assets.
 4. Preserve the actual sequence of work: scope and goal; sources or inputs; model contribution; human judgment and criticism; rejected or failed directions; correction or decision; implementation and outcome; remaining uncertainty. Attribute quoted words and do not invent missing conversation history.
@@ -64,8 +64,17 @@ The journal is the public production memory of the project. Add an entry when th
 6. Put reusable entry-specific material under `/journal/<slug>/artifacts/`. The Greek entry may link to the same artifacts. Use descriptive filenames and explain what each artifact proves, how it was derived, and any important limitation.
 7. Link to the exact implementation evidence when it exists: the relevant pull request, commit, deployed page, or source artifact. Describe its real state accurately; `opened`, `committed`, `merged`, `deployed`, and `verified live` are different claims.
 8. Make the new entry discoverable in both `sitemap.xml` and `llms.txt`. If navigation or a journal link currently points directly to one entry, review it deliberately so the previous record is not made unreachable by accident.
-9. Validate both language pages: titles and heading hierarchy, canonical and alternate URLs, dates, internal links, fragment IDs, assets, source links, responsive layout, and the relationship between the two versions. Run the repository checks before committing.
+9. Compile and validate both language pages: titles and heading hierarchy, canonical and alternate URLs, dates, internal links, fragment IDs, assets, source links, responsive layout, and the relationship between the two versions. `python3 site/build.py --check` must pass from a clean tree before committing.
 10. When correcting a published entry, preserve the substance of the earlier error and add the correction or revision context. Public memory should show learning, not a silently rewritten past.
+
+## Deterministic page compiler
+
+- The source path is `page metadata + shared component tree + semantic content → static HTML`.
+- Shared `head`, header, menu, language switcher, and footer behavior belongs in `site/build.py`, never in copied page markup.
+- Page-specific prose and article structure belongs in `site/content/`; it must not contain a site header or footer.
+- Root HTML files are public build artifacts. They remain committed for transparent diffs and buildless hosting, but are never the source of truth.
+- Any compiler run with unchanged inputs must produce byte-identical output. Do not include timestamps, environment-dependent ordering, random IDs, machine paths, or network results.
+- CI runs the compiler in check mode. A manual edit to generated output, a missing rebuild, or a nondeterministic result must fail the build.
 
 Dates describe publication, not when an agent happened to start drafting. Never publish a future or guessed date. If the exact publication date or factual boundary is unknown, stop and ask.
 

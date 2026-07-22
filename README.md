@@ -2,7 +2,21 @@
 
 Public website for [Pnyx](https://github.com/pikos-apikos/pnyx), an open civic protocol for public reasoning, human judgment, accountable action, and auditable public memory.
 
-The site is dependency-free static HTML and CSS. It uses no external fonts, scripts, trackers, or third-party runtime assets.
+The site is dependency-free static HTML and CSS at runtime. A small Python standard-library compiler composes shared page components and exports the committed static HTML. It uses no external fonts, scripts, trackers, or third-party runtime assets.
+
+## Build
+
+Edit structured page metadata and shared components in `site/build.py`, and page-specific semantic content in `site/content/`. Then compile:
+
+```bash
+python3 site/build.py
+```
+
+Generated HTML is committed so Cloudflare Pages remains a buildless static deployment. Verify that it is reproducible with:
+
+```bash
+python3 site/build.py --check
+```
 
 ## Local preview
 
@@ -16,7 +30,7 @@ Then open `http://localhost:8080`.
 
 - Production branch: `main`
 - Framework preset: `None`
-- Build command: `exit 0`
+- Build command: `python3 site/build.py --check`
 - Build output directory: `.`
 - Root directory: `/`
 

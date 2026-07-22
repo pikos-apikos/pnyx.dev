@@ -107,7 +107,10 @@ jobs:
           sitemap = ET.parse(root / 'sitemap.xml').getroot()
           namespace = {'sm': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
           locations = {node.text for node in sitemap.findall('.//sm:loc', namespace)}
-          expected_locations = {'https://pnyx.dev/', 'https://pnyx.dev/el/'}
+          expected_locations = {
+              'https://pnyx.dev/', 'https://pnyx.dev/el/',
+              'https://pnyx.dev/journal/horizon/', 'https://pnyx.dev/el/journal/horizon/'
+          }
           if locations != expected_locations:
               raise SystemExit(f"sitemap.xml locations differ: {locations}")
 

@@ -17,4 +17,20 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://pnyx.dev/journal/horizon/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pnyx.dev/journal/horizon/" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://pnyx.dev/el/journal/horizon/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pnyx.dev/journal/horizon/" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pnyx.dev/el/journal/horizon/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pnyx.dev/journal/horizon/" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://pnyx.dev/el/journal/horizon/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pnyx.dev/journal/horizon/" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>

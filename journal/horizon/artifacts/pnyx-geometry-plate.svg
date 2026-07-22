@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="700" viewBox="0 0 1600 700" role="img" aria-labelledby="title desc">
+  <title id="title">Pnyx I controlled view geometry</title>
+  <desc id="desc">A landmark geometry plate for a 94.5 degree northeast view from Pnyx I.</desc>
+  <rect width="1600" height="700" fill="#f4f0e8"/>
+  <text x="70" y="75" font-family="system-ui,sans-serif" font-size="34" font-weight="700" fill="#18231f">Pnyx I · controlled northeast view</text>
+  <text x="70" y="112" font-family="system-ui,sans-serif" font-size="20" fill="#53605a">Rectilinear 94.5° field of view · reconstructed landmark plate</text>
+  <path d="M70 455 C170 435 250 450 340 425 C440 397 520 430 610 405 C700 380 770 410 850 360 C920 320 980 390 1040 335 C1100 275 1160 410 1230 385 C1300 365 1370 395 1530 370 L1530 560 L70 560 Z" fill="#d8d2c5" stroke="#24352f" stroke-width="5"/>
+  <path d="M70 560 L1530 560" stroke="#8a7654" stroke-width="3"/>
+  <g font-family="system-ui,sans-serif" font-size="18" fill="#18231f" stroke="#18231f" stroke-width="2">
+    <path d="M75 170 V455"/><text x="82" y="165" stroke="none">Parnitha · 359.7° · 22.5 km</text>
+    <path d="M617 220 V405"/><text x="625" y="215" stroke="none">Agora · 35.5° · 0.5 km</text>
+    <path d="M831 170 V365"/><text x="840" y="165" stroke="none">Penteli · 49.3° · 18.9 km</text>
+    <path d="M1015 205 V335"/><text x="1025" y="200" stroke="none">Lycabettus · 61.2° · 2.4 km</text>
+    <path d="M1190 245 V390"/><text x="1200" y="240" stroke="none">Areopagus · 72.5° · 0.4 km</text>
+    <path d="M1510 205 V370"/><text x="1260" y="200" stroke="none">Acropolis · 93.3° · 0.7 km</text>
+  </g>
+  <g font-family="system-ui,sans-serif" font-size="17" fill="#53605a">
+    <text x="70" y="610">View: 000°</text><text x="1450" y="610">094.5°</text>
+    <text x="70" y="650">Landmark positions preserve the verified production parameters. The original sampled DEM array was not retained.</text>
+  </g>
+</svg>

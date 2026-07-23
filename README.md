@@ -2,11 +2,11 @@
 
 Public website for [Pnyx](https://github.com/pikos-apikos/pnyx), an open civic protocol for public reasoning, human judgment, accountable action, and auditable public memory.
 
-The site is dependency-free static HTML and CSS at runtime. A small Python standard-library compiler composes shared page components and exports the committed static HTML. It uses no external fonts, scripts, trackers, or third-party runtime assets.
+The site is dependency-free static HTML and CSS at runtime. A small Python standard-library compiler includes shared header and footer HTML fragments, composes page content, and exports the committed static HTML. It uses no external fonts, scripts, trackers, or third-party runtime assets.
 
 ## Build
 
-Edit structured page metadata and shared components in `site/build.py`, and page-specific semantic content in `site/content/`. Then compile:
+Edit page metadata in `site/build.py`, shared bilingual HTML in `site/fragments/`, and page-specific semantic content in `site/content/`. Then compile:
 
 ```bash
 python3 site/build.py

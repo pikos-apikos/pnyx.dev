@@ -6,11 +6,16 @@ from __future__ import annotations
 import argparse
 import difflib
 import html
+import os
+import sys
+import threading
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
 ROOT = Path(__file__).resolve().parent.parent
+SOURCE_PATHS = (ROOT / "site" / "build.py", ROOT / "site" / "content", ROOT / "site" / "fragments")
 
 
 @dataclass(frozen=True)
@@ -138,7 +143,82 @@ def build(check: bool) -> int:
     return 0
 
 
+def source_fingerprint() -> tuple[tuple[str, int, int], ...]:
+    """Return a cheap, deterministic signature for every build input."""
+    files: list[Path] = []
+    for source in SOURCE_PATHS:
+        files.extend(path for path in source.rglob("*") if path.is_file()) if source.is_dir() else files.append(source)
+    return tuple(
+        (str(path.relative_to(ROOT)), stat.st_mtime_ns, stat.st_size)
+        for path in sorted(files)
+        for stat in (path.stat(),)
+    )
+
+
+def terminal_link(url: str) -> str:
+    """Use an OSC 8 hyperlink on a terminal; the label remains a plain URL."""
+    if sys.stdout.isatty() and os.environ.get("TERM", "") != "dumb":
+        return f"\033]8;;{url}\033\\{url}\033]8;;\033\\"
+    return url
+
+
+def serve(host: str, port: int) -> int:
+    """Build on source changes immediately before serving each request."""
+    if build(check=False):
+        return 1
+
+    state = {"fingerprint": source_fingerprint()}
+    build_lock = threading.Lock()
+
+    class RebuildingHandler(SimpleHTTPRequestHandler):
+        def _rebuild_if_needed(self) -> None:
+            with build_lock:
+                current = source_fingerprint()
+                if current == state["fingerprint"]:
+                    return
+                if build(check=False):
+                    raise RuntimeError("Build failed")
+                state["fingerprint"] = current
+
+        def do_GET(self) -> None:
+            try:
+                self._rebuild_if_needed()
+            except (OSError, RuntimeError) as error:
+                self.send_error(500, f"Build failed: {error}")
+                return
+            super().do_GET()
+
+        def do_HEAD(self) -> None:
+            try:
+                self._rebuild_if_needed()
+            except (OSError, RuntimeError) as error:
+                self.send_error(500, f"Build failed: {error}")
+                return
+            super().do_HEAD()
+
+    display_host = "127.0.0.1" if host in {"0.0.0.0", "::"} else host
+    url = f"http://{display_host}:{port}/"
+    server = ThreadingHTTPServer((host, port), lambda *args, **kwargs: RebuildingHandler(*args, directory=str(ROOT), **kwargs))
+    print(f"Preview: {terminal_link(url)}", flush=True)
+    print("Edit a source file, then refresh the browser. Press Ctrl+C to stop.", flush=True)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nStopped.")
+    finally:
+        server.server_close()
+    return 0
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("command", nargs="?", choices=("build", "serve"), default="build")
     parser.add_argument("--check", action="store_true", help="fail when committed output differs from a clean compile")
-    raise SystemExit(build(parser.parse_args().check))
+    parser.add_argument("--host", default="127.0.0.1", help="preview server bind address")
+    parser.add_argument("--port", type=int, default=8080, help="preview server port")
+    args = parser.parse_args()
+    if args.command == "serve":
+        if args.check:
+            parser.error("--check cannot be used with serve")
+        raise SystemExit(serve(args.host, args.port))
+    raise SystemExit(build(args.check))

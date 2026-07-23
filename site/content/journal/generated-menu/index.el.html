@@ -26,11 +26,11 @@
         <section>
           <p class="eyebrow">Υλοποίηση · Deterministic export</p>
           <h2>Από αντιγραμμένο HTML σε μικρό page compiler</h2>
-          <p>Το <code>site/build.py</code> συνθέτει πλέον metadata και κοινά components γύρω από semantic content: <code>head → header/menu → content → footer</code>. Οι αγγλικές και ελληνικές σελίδες εξάγονται ως στατικό HTML και παραμένουν committed, ώστε στο review να φαίνεται ακριβώς το deployable αποτέλεσμα.</p>
+          <p>Το <code>site/build.py</code> ανακαλύπτει πλέον ζευγάρια HTML source artifacts και τα περιλαμβάνει με μία σταθερή σειρά: <code>head → header/menu → content → footer</code>. Τα routes προκύπτουν από τον φάκελο content. Οι αγγλικές και ελληνικές σελίδες εξάγονται ως στατικό HTML και παραμένουν committed, ώστε στο review να φαίνεται ακριβώς το deployable αποτέλεσμα.</p>
           <p>Το <code>python3 site/build.py --check</code> απορρίπτει generated σελίδες που τροποποιήθηκαν χειροκίνητα ή έμειναν stale. Το runtime site παραμένει χωρίς dependencies· ο ντετερμινισμός επιβάλλεται στο build.</p>
           <ul>
             <li>Ένα κοινό responsive header και component πλοήγησης.</li>
-            <li>Δίγλωσσοι ορισμοί σελίδων και semantic content sources.</li>
+            <li>Ζευγάρια δίγλωσσων HTML sources, των οποίων τα paths ορίζουν τα routes.</li>
             <li>Accessible native burger με σωστό πρώτο load στο desktop.</li>
             <li>Byte-identical output όταν τα inputs δεν αλλάζουν.</li>
           </ul>

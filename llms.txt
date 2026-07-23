@@ -37,6 +37,8 @@ Technology serves society. Citizens retain judgment.
 
 ## Public production journal
 
+- The model is not the architecture: https://pnyx.dev/journal/model-not-architecture/
+- Greek: https://pnyx.dev/el/journal/model-not-architecture/
 - One menu, generated everywhere: https://pnyx.dev/journal/generated-menu/
 - Greek: https://pnyx.dev/el/journal/generated-menu/
 - From the assembly to the horizon: https://pnyx.dev/journal/horizon/

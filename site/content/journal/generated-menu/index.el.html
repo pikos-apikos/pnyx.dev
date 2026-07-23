@@ -1,0 +1,46 @@
+<main id="main">
+    <article class="journal-entry">
+      <header class="journal-header">
+        <p class="eyebrow">Δημόσια καταγραφή παραγωγής · 23 Ιουλίου 2026</p>
+        <h1>Ένα μενού,<br>παραγόμενο παντού</h1>
+        <p class="story-deck">Πώς ένα κρυμμένο link στο mobile αποκάλυψε την αντιγραφή της πλοήγησης και οδήγησε σε κοινό deterministic header.</p>
+      </header>
+      <div class="journal-body">
+        <section>
+          <h2>Τι αποκάλυψε η διεπαφή</h2>
+          <p>Το link του Ημερολογίου δεν χωρούσε πλέον στο mobile header. Η προσθήκη burger menu έλυσε το ορατό overflow, αλλά η πρώτη υλοποίηση αποκάλυψε ένα βαθύτερο πρόβλημα: η ίδια δομή πλοήγησης υπήρχε σε πολλά στατικά HTML αρχεία και μπορούσε να αποκλίνει ανά route και γλώσσα.</p>
+          <p>Ο στόχος έγινε μεγαλύτερος από το να χωρέσει ακόμη ένα link. Κάθε σελίδα έπρεπε να λαμβάνει το ίδιο header της γλώσσας της από μία αναπαραγώγιμη πηγή.</p>
+        </section>
+        <section>
+          <p class="eyebrow">Αστοχία · Πρώτη responsive συμπεριφορά</p>
+          <h2>Ένα μενού που εμφανιζόταν μετά από resize</h2>
+          <p>Το πρώτο burger χρησιμοποίησε native <code>&lt;details&gt;</code>. Στο desktop έκρυβε το <code>&lt;summary&gt;</code> ενώ το στοιχείο παρέμενε κλειστό, οπότε ο browser έκρυβε και την πλοήγηση στο αρχικό load. Το resize φαινόταν να το διορθώνει μόνο επειδή επανυπολογιζόταν το responsive state.</p>
+          <p>Η διόρθωση έκανε το desktop navigation ρητά ορατό, διατηρώντας το burger κλειστό στο mobile, χωρίς JavaScript.</p>
+        </section>
+        <section>
+          <p class="eyebrow">Ανθρώπινος έλεγχος · Δομική διόρθωση</p>
+          <h2>Οι σελίδες ακόμη δεν μοιράζονταν ένα μενού</h2>
+          <p>Ο έλεγχος βρήκε στη συνέχεια page-specific links και ασυνεπείς ονομασίες: η αρχική και οι σελίδες του ημερολογίου δεν εμφάνιζαν τους ίδιους προορισμούς. Η διόρθωση ήταν σαφής: το header πρέπει να παράγεται και να είναι ίδιο για κάθε σελίδα της ίδιας γλώσσας.</p>
+          <p>Η τελική κοινή πλοήγηση περιλαμβάνει Η ιστορία, Ημερολόγιο, αλλαγή γλώσσας και Δημόσιος κώδικας. Τα anchors μιας συγκεκριμένης σελίδας δεν ανήκουν στο καθολικό header.</p>
+        </section>
+        <section>
+          <p class="eyebrow">Υλοποίηση · Deterministic export</p>
+          <h2>Από αντιγραμμένο HTML σε μικρό page compiler</h2>
+          <p>Το <code>site/build.py</code> συνθέτει πλέον metadata και κοινά components γύρω από semantic content: <code>head → header/menu → content → footer</code>. Οι αγγλικές και ελληνικές σελίδες εξάγονται ως στατικό HTML και παραμένουν committed, ώστε στο review να φαίνεται ακριβώς το deployable αποτέλεσμα.</p>
+          <p>Το <code>python3 site/build.py --check</code> απορρίπτει generated σελίδες που τροποποιήθηκαν χειροκίνητα ή έμειναν stale. Το runtime site παραμένει χωρίς dependencies· ο ντετερμινισμός επιβάλλεται στο build.</p>
+          <ul>
+            <li>Ένα κοινό responsive header και component πλοήγησης.</li>
+            <li>Δίγλωσσοι ορισμοί σελίδων και semantic content sources.</li>
+            <li>Accessible native burger με σωστό πρώτο load στο desktop.</li>
+            <li>Byte-identical output όταν τα inputs δεν αλλάζουν.</li>
+          </ul>
+        </section>
+        <section class="record-note">
+          <p class="eyebrow">Κατάσταση · Δημόσια καταγραφή υλοποίησης</p>
+          <h2>Τι έχει πραγματικά ολοκληρωθεί</h2>
+          <p>Ο compiler, το κοινό μενού, οι generated σελίδες και αυτή η δίγλωσση καταγραφή ετοιμάστηκαν στο draft pull request <a href="https://github.com/pikos-apikos/pnyx.dev/pull/6">#6</a>. Τη στιγμή αυτής της καταγραφής το pull request είναι ανοικτό και δεν έχει γίνει merge· αυτό δεν ισοδυναμεί με deployment ή επαλήθευση στο live site.</p>
+          <p>Προηγούμενη εγγραφή: <a href="/el/journal/horizon/">Από τη συνέλευση στον ορίζοντα</a>.</p>
+        </section>
+      </div>
+    </article>
+  </main>

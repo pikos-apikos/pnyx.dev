@@ -18,6 +18,22 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://pnyx.dev/journal/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pnyx.dev/journal/" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://pnyx.dev/el/journal/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pnyx.dev/journal/" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pnyx.dev/el/journal/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pnyx.dev/journal/" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://pnyx.dev/el/journal/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pnyx.dev/journal/" />
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://pnyx.dev/journal/horizon/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://pnyx.dev/journal/horizon/" />
     <xhtml:link rel="alternate" hreflang="el" href="https://pnyx.dev/el/journal/horizon/" />
@@ -30,6 +46,38 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://pnyx.dev/journal/horizon/" />
     <xhtml:link rel="alternate" hreflang="el" href="https://pnyx.dev/el/journal/horizon/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pnyx.dev/journal/horizon/" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pnyx.dev/journal/generated-menu/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pnyx.dev/journal/generated-menu/" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://pnyx.dev/el/journal/generated-menu/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pnyx.dev/journal/generated-menu/" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pnyx.dev/el/journal/generated-menu/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pnyx.dev/journal/generated-menu/" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://pnyx.dev/el/journal/generated-menu/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pnyx.dev/journal/generated-menu/" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pnyx.dev/journal/model-not-architecture/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pnyx.dev/journal/model-not-architecture/" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://pnyx.dev/el/journal/model-not-architecture/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pnyx.dev/journal/model-not-architecture/" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pnyx.dev/el/journal/model-not-architecture/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://pnyx.dev/journal/model-not-architecture/" />
+    <xhtml:link rel="alternate" hreflang="el" href="https://pnyx.dev/el/journal/model-not-architecture/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pnyx.dev/journal/model-not-architecture/" />
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

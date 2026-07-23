@@ -4,6 +4,8 @@ Public website for [Pnyx](https://github.com/pikos-apikos/pnyx), an open civic p
 
 The site is dependency-free static HTML and CSS at runtime. A small Python standard-library compiler includes shared header and footer HTML fragments, composes page content, and exports the committed static HTML. It uses no external fonts, scripts, trackers, or third-party runtime assets.
 
+The component boundaries and offline/local-model path are documented in [ARCHITECTURE.md](ARCHITECTURE.md).
+
 ## Build
 
 Edit page metadata in `site/build.py`, shared bilingual HTML in `site/fragments/`, and page-specific semantic content in `site/content/`. Then compile:

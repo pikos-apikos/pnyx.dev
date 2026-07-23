@@ -110,6 +110,7 @@ jobs:
           locations = {node.text for node in sitemap.findall('.//sm:loc', namespace)}
           expected_locations = {
               'https://pnyx.dev/', 'https://pnyx.dev/el/',
+              'https://pnyx.dev/journal/', 'https://pnyx.dev/el/journal/',
               'https://pnyx.dev/journal/horizon/', 'https://pnyx.dev/el/journal/horizon/',
     'https://pnyx.dev/journal/generated-menu/', 'https://pnyx.dev/el/journal/generated-menu/'
           }

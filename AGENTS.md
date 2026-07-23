@@ -18,7 +18,7 @@ The site itself should model those values: claims must be attributable, uncertai
 - `/llms.txt` — machine-readable entry point.
 - `/_headers`, `/robots.txt`, and `/sitemap.xml` — deployment and discovery metadata.
 
-This is a dependency-free static site at runtime. `site/build.py` is the deterministic standard-library compiler; `site/content/` contains page-specific semantic content; the root HTML pages are generated artifacts. Do not add a framework, external font, tracker, client-side dependency, or third-party runtime asset unless the change explicitly requires it and the trade-off is documented.
+This is a dependency-free static site at runtime. `site/build.py` is the deterministic standard-library compiler; `site/fragments/` contains the shared bilingual header and footer HTML; `site/content/` contains page-specific semantic content; the root HTML pages are generated artifacts. Do not add a framework, external font, tracker, client-side dependency, or third-party runtime asset unless the change explicitly requires it and the trade-off is documented.
 
 ## Core principles
 
@@ -69,9 +69,10 @@ The journal is the public production memory of the project. Add an entry when th
 
 ## Deterministic page compiler
 
-- The source path is `page metadata + shared component tree + semantic content → static HTML`.
-- Shared `head`, header, menu, language switcher, and footer behavior belongs in `site/build.py`, never in copied page markup.
-- Page-specific prose and article structure belongs in `site/content/`; it must not contain a site header or footer.
+- The source path is `page metadata + shared HTML fragments + semantic content → static HTML`.
+- Shared headers, menus, language switchers, and footers are ordinary HTML files under `site/fragments/`; the compiler includes them verbatim by language.
+- Edit header or footer markup in the corresponding fragment, not in Python and never in generated pages.
+- `site/build.py` owns deterministic composition and page metadata; page-specific prose and article structure belongs in `site/content/`.
 - Root HTML files are public build artifacts. They remain committed for transparent diffs and buildless hosting, but are never the source of truth.
 - Any compiler run with unchanged inputs must produce byte-identical output. Do not include timestamps, environment-dependent ordering, random IDs, machine paths, or network results.
 - CI runs the compiler in check mode. A manual edit to generated output, a missing rebuild, or a nondeterministic result must fail the build.

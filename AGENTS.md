@@ -1,129 +1,116 @@
-# AGENTS.md
+# Site rules
 
-This file is the working agreement for coding agents contributing to `pnyx.dev`.
+Build `pnyx.dev` as a deterministic static site.
 
-## Purpose
+Read `README.md` and `ARCHITECTURE.md` before changing the site.
 
-`pnyx.dev` is the public website for Pnyx, an open civic protocol for public reasoning, human judgment, accountable action, and auditable public memory.
+## Sources
 
-The site itself should model those values: claims must be attributable, uncertainty must remain visible, and changes must leave an understandable public record.
+- Page registry and compiler: `site/build.py`
+- Header: `site/fragments/header.<lang>.html`
+- Footer: `site/fragments/footer.<lang>.html`
+- Page content: `site/content/*.html`
+- Shared styles: `styles.css`
+- Generated pages: `index.html`, `el/`, `journal/`
+- Architecture: `ARCHITECTURE.md`
 
-## Repository shape
+Generated pages are outputs. Do not edit them by hand.
 
-- `/index.html` — English homepage.
-- `/el/index.html` — Greek homepage.
-- `/styles.css` — shared styles for both languages and the journal.
-- `/assets/` — production images and other static assets.
-- `/journal/` and `/el/journal/` — English and Greek records of significant decisions and production work.
-- `/llms.txt` — machine-readable entry point.
-- `/_headers`, `/robots.txt`, and `/sitemap.xml` — deployment and discovery metadata.
+## Build a page
 
-This is a dependency-free static site at runtime. `site/build.py` is the deterministic standard-library compiler; `site/fragments/` contains the shared bilingual header and footer HTML; `site/content/` contains page-specific semantic content; the root HTML pages are generated artifacts. Do not add a framework, external font, tracker, client-side dependency, or third-party runtime asset unless the change explicitly requires it and the trade-off is documented.
+1. Read the page metadata.
+2. Include the header for the page language.
+3. Include the page content.
+4. Include the footer for the page language.
+5. Write the static HTML.
 
-## Core principles
+The order is always:
 
-- We love humanity.
-- Citizens retain political judgment. Models assist; they do not rule.
-- Preserve dissent, uncertainty, rejected warnings, provenance, and outcomes.
-- Do not turn funding, visibility, technical expertise, or model confidence into civic authority.
-- Public work should return to public memory.
-- Pnyx should be developed using the same transparent civic loop it proposes.
+```text
+metadata → header → content → footer → static HTML
+```
 
-## Working workflow
+## Shared navigation
 
-1. Read this file, `README.md`, and every file directly affected by the task.
-2. Inspect the current branch and working tree. Preserve unrelated user changes.
-3. State the intended change and any meaningful assumptions before editing.
-4. Make the smallest coherent change in the compiler, shared components, or content sources. Do not hand-edit generated HTML.
-5. Keep the English and Greek experiences structurally aligned. Do not use machine-looking literal translation when the surrounding prose has a distinct voice.
-6. When a change represents a meaningful design, research, or governance decision, update the corresponding journal record in both languages.
-7. Run `python3 site/build.py`, then `python3 site/build.py --check`, and validate locally before committing.
-8. Commit only files in scope, with a terse description of the actual change.
-9. Push to a feature branch and update or open a pull request. Do not push directly to `main` unless the user explicitly requests it.
-10. Verify the deployed or preview URL before saying that a production change is live. A commit, merged PR, and deployment are different states.
+All pages in one language use the same header file.
 
-## Content and evidence rules
+To change the menu:
 
-- Never present a generated reconstruction, estimate, inference, or simulated result as an observed fact.
-- Prefer primary sources for historical, technical, legal, and geographic claims.
-- Keep source links close to the claims they support.
-- If a source supports only part of a statement, narrow the statement or expose the gap.
-- Distinguish clearly between a source artifact, a derived geometric/data artifact, and an artistic interpretation.
-- Do not silently erase an earlier error from the journal. Record the correction and what changed.
-- Preserve the pronunciation as `Pnyx (pronounced "p-nix")` where pronunciation guidance is needed.
+1. Edit `site/fragments/header.en.html`.
+2. Edit `site/fragments/header.el.html`.
+3. Rebuild every page.
 
-## Adding a journal entry
+Do not create page-specific navigation.
 
-The journal is the public production memory of the project. Add an entry when the reasoning, evidence, human criticism, rejected direction, correction, or outcome would be lost in a Git diff. Do not create an entry merely to restate a commit.
+Journal links:
 
-1. Choose one short, stable, lowercase slug. Add both languages to the compiler page registry and create their semantic sources under `site/content/`; neither language is an optional follow-up. The compiler must export `/journal/<slug>/index.html` and `/el/journal/<slug>/index.html`.
-2. Start from the structure of an existing entry, but write the record from the available evidence. Do not copy claims, dates, sources, pull-request numbers, or implementation status from the example.
-3. Give each page its own translated title, description, visible publication date, canonical URL, Open Graph metadata, and `en`/`el`/`x-default` alternate links. Use an absolute public URL in social metadata and root-relative URLs for site navigation and assets.
-4. Preserve the actual sequence of work: scope and goal; sources or inputs; model contribution; human judgment and criticism; rejected or failed directions; correction or decision; implementation and outcome; remaining uncertainty. Attribute quoted words and do not invent missing conversation history.
-5. Keep provenance beside the relevant claim. Separate observed facts, source material, derived artifacts, model inferences, and artistic interpretations. If an artifact or rejected candidate no longer exists, say so instead of reconstructing it silently.
-6. Put reusable entry-specific material under `/journal/<slug>/artifacts/`. The Greek entry may link to the same artifacts. Use descriptive filenames and explain what each artifact proves, how it was derived, and any important limitation.
-7. Link to the exact implementation evidence when it exists: the relevant pull request, commit, deployed page, or source artifact. Describe its real state accurately; `opened`, `committed`, `merged`, `deployed`, and `verified live` are different claims.
-8. Make the new entry discoverable in both `sitemap.xml` and `llms.txt`. If navigation or a journal link currently points directly to one entry, review it deliberately so the previous record is not made unreachable by accident.
-9. Compile and validate both language pages: titles and heading hierarchy, canonical and alternate URLs, dates, internal links, fragment IDs, assets, source links, responsive layout, and the relationship between the two versions. `python3 site/build.py --check` must pass from a clean tree before committing.
-10. When correcting a published entry, preserve the substance of the earlier error and add the correction or revision context. Public memory should show learning, not a silently rewritten past.
+- English: `/journal/`
+- Greek: `/el/journal/`
 
-## Deterministic page compiler
+The journal index lists every entry, newest first.
+Do not remove an older entry when adding a new one.
 
-- The source path is `page metadata + shared HTML fragments + semantic content → static HTML`.
-- Shared headers, menus, language switchers, and footers are ordinary HTML files under `site/fragments/`; the compiler includes them verbatim by language.
-- Edit header or footer markup in the corresponding fragment, not in Python and never in generated pages.
-- `site/build.py` owns deterministic composition and page metadata; page-specific prose and article structure belongs in `site/content/`.
-- Root HTML files are public build artifacts. They remain committed for transparent diffs and buildless hosting, but are never the source of truth.
-- Any compiler run with unchanged inputs must produce byte-identical output. Do not include timestamps, environment-dependent ordering, random IDs, machine paths, or network results.
-- CI runs the compiler in check mode. A manual edit to generated output, a missing rebuild, or a nondeterministic result must fail the build.
+## Commands
 
-Dates describe publication, not when an agent happened to start drafting. Never publish a future or guessed date. If the exact publication date or factual boundary is unknown, stop and ask.
+Build:
 
-## Image workflow
+```bash
+python3 site/build.py
+```
 
-Images are part of the public record, not decoration without provenance.
+Check:
 
-- Keep original references, prompts, derived data, and final production assets separate.
-- For historically or geographically grounded scenes, establish geometry and orientation before image generation.
-- Label generated images as artistic interpretations even when constrained by real data.
-- Never claim pixel-level historical or geodetic accuracy for a generated image.
-- Use versioned filenames while exploring. Replace a production filename only after the user selects the exact candidate.
-- After replacement, verify the HTML reference, file hash, responsive crop, social preview, and deployed result. Account for browser/CDN caching, but do not blame cache without checking the deployed asset.
-- Optimize production raster assets (normally WebP for the page and JPEG where required for social previews) without discarding the higher-quality working source prematurely.
-- Do not render meaningful page copy into an image. Keep it as accessible, responsive HTML.
+```bash
+python3 site/build.py --check
+```
 
-## Design rules
+Preview:
 
-- Preserve the restrained editorial character of the site.
-- Prefer typography, spacing, rhythm, and photography over ornamental UI containers.
-- Avoid dashboard aesthetics, gratuitous cards, gradients, and decorative motion.
-- Check desktop and narrow mobile layouts.
-- Maintain semantic heading order, keyboard access, readable contrast, useful alt text, and `prefers-reduced-motion` behavior.
-- Reuse existing design tokens in `:root` before introducing new colors, radii, shadows, or widths.
+```bash
+python3 -m http.server 8080
+```
 
-## Validation
+Before finishing:
 
-At minimum, verify:
+1. Run the build.
+2. Run the check.
+3. Check local links and assets.
+4. Check English and Greek pages.
+5. Report changed files and validation results.
 
-- required files remain present;
-- internal and root-relative links resolve;
-- IDs and fragment links exist and are unique;
-- English and Greek navigation paths remain valid;
-- referenced assets exist with the expected filename and format;
-- `sitemap.xml` and `llms.txt` remain consistent with public entry points;
-- the page renders at desktop and mobile widths;
-- no external runtime request was introduced unintentionally.
+## Content rules
 
-Use the repository's GitHub Actions checks as the final automated guardrail, not as a substitute for local inspection.
+- Never state an inference or generated result as an observed fact.
+- Keep sources beside supported claims.
+- Keep uncertainty, corrections, and rejected directions visible.
+- Models assist. Humans retain judgment.
+- Keep English and Greek structure aligned.
+- Use `Pnyx (pronounced "p-nix")` when pronunciation is needed.
+- Do not claim a commit is merged, deployed, or live without verification.
 
-## Handoff
+## Site constraints
 
-Report:
+- Keep runtime output static and dependency-free.
+- Do not require network access.
+- Do not add trackers or external runtime assets.
+- Preserve semantic HTML, keyboard access, contrast, and mobile layout.
+- Prefer existing design tokens and styles.
+- Keep unchanged inputs byte-identical.
+- Keep persistent state in files and Git.
 
-- what changed;
-- which files changed;
-- what was validated;
-- what remains uncertain or intentionally deferred;
-- the branch, commit, and PR/deployment state when applicable.
+## Model constraints
 
-Never report a guessed tool result, successful push, merged PR, cache state, or live deployment as fact.
+Assume a small local model may perform a task.
+
+- Give one component one small task.
+- Use short instructions.
+- Name exact input and output files.
+- Request structured output when possible.
+- Validate every output before the next step.
+- Prefer deterministic code over model reasoning.
+- Do not require a cloud model.
+- Do not assume internet access.
+
+Models are replaceable components.
+Artifacts are persistent state.
+The deterministic compiler is the final authority.

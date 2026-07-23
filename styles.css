@@ -100,13 +100,9 @@ a:hover, a:focus-visible { color: var(--color-accent-hover); }
   font-weight: 700;
 }
 
-.nav-menu { margin-left: auto; }
-.nav-menu > summary { display: none; }
-.nav-menu > summary::-webkit-details-marker { display: none; }
-/* A closed <details> hides its contents by default. On desktop the summary is
-   intentionally hidden, so keep the navigation explicitly visible from the
-   first render instead of depending on a resize or script-driven open state. */
-.nav-menu:not([open]) > nav { display: flex; }
+.desktop-nav { margin-left: auto; }
+.mobile-nav { display: none; margin-left: auto; }
+.mobile-nav > summary::-webkit-details-marker { display: none; }
 
 nav {
   display: flex;
@@ -421,9 +417,10 @@ footer p { margin: 0; }
     padding-top: .7rem;
     padding-bottom: .7rem;
   }
-  .nav-menu { position: relative; }
-  .nav-menu:not([open]) > nav { display: none; }
-  .nav-menu > summary {
+  .desktop-nav { display: none; }
+  .mobile-nav { display: block; position: relative; }
+  .mobile-nav:not([open]) > nav { display: none; }
+  .mobile-nav > summary {
     display: flex;
     min-height: 42px;
     align-items: center;
@@ -438,7 +435,7 @@ footer p { margin: 0; }
     font-weight: 600;
     list-style: none;
   }
-  .nav-menu > summary:focus-visible {
+  .mobile-nav > summary:focus-visible {
     outline: 3px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
     outline-offset: 2px;
   }
@@ -457,10 +454,10 @@ footer p { margin: 0; }
   .nav-icon::after { position: absolute; left: 0; content: ""; }
   .nav-icon::before { top: -6px; }
   .nav-icon::after { top: 6px; }
-  .nav-menu[open] .nav-icon { background: transparent; }
-  .nav-menu[open] .nav-icon::before { top: 0; transform: rotate(45deg); }
-  .nav-menu[open] .nav-icon::after { top: 0; transform: rotate(-45deg); }
-  .nav-menu nav {
+  .mobile-nav[open] .nav-icon { background: transparent; }
+  .mobile-nav[open] .nav-icon::before { top: 0; transform: rotate(45deg); }
+  .mobile-nav[open] .nav-icon::after { top: 0; transform: rotate(-45deg); }
+  .mobile-nav nav {
     position: absolute;
     top: calc(100% + .6rem);
     right: 0;
@@ -476,7 +473,7 @@ footer p { margin: 0; }
     background: var(--color-surface);
     box-shadow: var(--shadow-md);
   }
-  .nav-menu nav a { padding: .7rem .8rem; }
+  .mobile-nav nav a { padding: .7rem .8rem; }
   main, footer { width: min(calc(100% - 2rem), var(--wide)); }
 }
 

@@ -80,26 +80,16 @@ PAGES = (
 
 def nav(page: Page) -> Node:
     el_lang = page.lang == "el"
-    if page.journal:
-        links = (
-            element("a", "Η αφήγηση" if el_lang else "The story", href="/el/" if el_lang else "/"),
-            element("a", "English" if el_lang else "Ελληνικά", href="/journal/horizon/" if el_lang else "/el/journal/horizon/", lang="en" if el_lang else "el", hreflang="en" if el_lang else "el"),
-            element("a", "Υλοποίηση" if el_lang else "Implementation", href="https://github.com/pikos-apikos/pnyx.dev/pull/4"),
-        )
-    else:
-        links = (
-            element("a", "Η αφήγηση" if el_lang else "The story", href="#story"),
-            element("a", "Ο πολιτειακός βρόχος" if el_lang else "The civic loop", href="#loop"),
-            element("a", "Ημερολόγιο" if el_lang else "Journal", href="/el/journal/horizon/" if el_lang else "/journal/horizon/"),
-            element("a", "English" if el_lang else "Ελληνικά", href="/" if el_lang else "/el/", lang="en" if el_lang else "el", hreflang="en" if el_lang else "el"),
-            element("a", "Δημόσιος κώδικας" if el_lang else "Public source", href="https://github.com/pikos-apikos/pnyx"),
-        )
+    links = (
+        element("a", "Ημερολόγιο" if el_lang else "Journal", href="/el/journal/horizon/" if el_lang else "/journal/horizon/"),
+        element("a", "English" if el_lang else "Ελληνικά", href=page.alternate_en if el_lang else page.alternate_el, lang="en" if el_lang else "el", hreflang="en" if el_lang else "el"),
+        element("a", "Δημόσιος κώδικας" if el_lang else "Public source", href="https://github.com/pikos-apikos/pnyx"),
+    )
     return element("details",
         element("summary", element("span", class_="nav-icon", aria_hidden="true"), element("span", "Μενού" if el_lang else "Menu", class_="nav-label"), aria_label="Άνοιγμα πλοήγησης" if el_lang else "Open navigation"),
         element("nav", *links, aria_label="Κύρια πλοήγηση" if el_lang else "Primary navigation"),
         class_="nav-menu",
     )
-
 
 def header(page: Page) -> Node:
     el_lang = page.lang == "el"

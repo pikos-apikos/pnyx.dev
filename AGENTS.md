@@ -67,8 +67,12 @@ python3 site/build.py --check
 Preview:
 
 ```bash
-python3 -m http.server 8080
+python3 site/build.py serve
 ```
+
+The command prints the preview URL.
+Edit a source file, then refresh the browser.
+The request rebuilds only when a source changed.
 
 Before finishing:
 

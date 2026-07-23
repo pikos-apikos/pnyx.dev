@@ -80,7 +80,11 @@ PAGES = (
 
 def nav(page: Page) -> Node:
     el_lang = page.lang == "el"
+    story_attrs = {"href": "/el/" if el_lang else "/"}
+    if not page.journal:
+        story_attrs["aria_current"] = "page"
     links = (
+        element("a", "Η ιστορία" if el_lang else "The story", **story_attrs),
         element("a", "Ημερολόγιο" if el_lang else "Journal", href="/el/journal/horizon/" if el_lang else "/journal/horizon/"),
         element("a", "English" if el_lang else "Ελληνικά", href=page.alternate_en if el_lang else page.alternate_el, lang="en" if el_lang else "el", hreflang="en" if el_lang else "el"),
         element("a", "Δημόσιος κώδικας" if el_lang else "Public source", href="https://github.com/pikos-apikos/pnyx"),

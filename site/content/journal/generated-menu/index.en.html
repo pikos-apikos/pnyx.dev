@@ -26,11 +26,11 @@
         <section>
           <p class="eyebrow">Implementation · Deterministic export</p>
           <h2>From copied HTML to a small page compiler</h2>
-          <p><code>site/build.py</code> now composes metadata and shared components around semantic content: <code>head → header/menu → content → footer</code>. English and Greek pages are exported as static HTML and remain committed so the exact deployable result is visible in review.</p>
+          <p><code>site/build.py</code> now discovers paired HTML source artifacts and includes them in one fixed order: <code>head → header/menu → content → footer</code>. Page routes come from the content directory. English and Greek pages are exported as static HTML and remain committed so the exact deployable result is visible in review.</p>
           <p><code>python3 site/build.py --check</code> rejects hand-edited or stale generated pages. The runtime site remains dependency-free; determinism is enforced at build time.</p>
           <ul>
             <li>One shared responsive header and navigation component.</li>
-            <li>Structured bilingual page definitions and semantic content sources.</li>
+            <li>Paired bilingual HTML sources whose paths define their routes.</li>
             <li>Accessible native burger behavior with desktop-first-load correctness.</li>
             <li>Byte-identical output for unchanged inputs.</li>
           </ul>

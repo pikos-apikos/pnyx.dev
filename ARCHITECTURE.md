@@ -124,7 +124,20 @@ The baseline path needs:
 - Python 3;
 - a filesystem;
 - Git;
-- an optional static HTTP server.
+- an optional standard-library HTTP server.
+
+The local review loop is:
+
+```text
+edit source
+  → refresh browser
+  → fingerprint source mtimes and sizes
+  → rebuild only when changed
+  → serve generated page
+  → human review
+```
+
+Run it with `python3 site/build.py serve`. The CLI prints the full preview URL, using an OSC 8 hyperlink when the terminal supports it and readable plain text otherwise. Browser requests are the trigger, so the baseline needs neither filesystem-event dependencies nor a polling build loop.
 
 An assisted path may call an OpenAI-compatible local endpoint exposed by vLLM, GPUStack, or llama.cpp. The adapter must be optional. With no endpoint configured, deterministic build and validation continue to work.
 

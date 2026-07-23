@@ -23,10 +23,16 @@ python3 site/build.py --check
 ## Local preview
 
 ```bash
-python3 -m http.server 8080
+python3 site/build.py serve
 ```
 
-Then open `http://localhost:8080`.
+The command prints a clickable preview URL when the terminal supports OSC 8 hyperlinks. Edit a source file and refresh the browser: the server detects changed build inputs and recompiles before serving the request.
+
+Options:
+
+```bash
+python3 site/build.py serve --host 0.0.0.0 --port 8080
+```
 
 ## Cloudflare Pages
 

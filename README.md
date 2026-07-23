@@ -2,23 +2,25 @@
 
 Public website for [Pnyx](https://github.com/pikos-apikos/pnyx), an open civic protocol for public reasoning, human judgment, accountable action, and auditable public memory.
 
-The site is dependency-free static HTML and CSS at runtime. A small Python standard-library compiler includes shared header and footer HTML fragments, composes page content, and exports the committed static HTML. It uses no external fonts, scripts, trackers, or third-party runtime assets.
+The runtime is dependency-free static HTML and CSS. See [ARCHITECTURE.md](ARCHITECTURE.md).
 
-The component boundaries and offline/local-model path are documented in [ARCHITECTURE.md](ARCHITECTURE.md).
+## Sources
+
+- `site/fragments/head.<lang>.html`
+- `site/fragments/header.<lang>.html`
+- `site/fragments/footer.<lang>.html`
+- `site/content/**/index.<lang>.html`
+
+The content directory mirrors public routes. The Python builder discovers pages; it contains no page registry or metadata.
 
 ## Build
 
-Edit page metadata in `site/build.py`, shared bilingual HTML in `site/fragments/`, and page-specific semantic content in `site/content/`. Then compile:
-
 ```bash
 python3 site/build.py
-```
-
-Generated HTML is committed so Cloudflare Pages remains a buildless static deployment. Verify that it is reproducible with:
-
-```bash
 python3 site/build.py --check
 ```
+
+Generated HTML is committed for transparent review and buildless static hosting.
 
 ## Local preview
 
@@ -26,9 +28,7 @@ python3 site/build.py --check
 python3 site/build.py serve
 ```
 
-The command prints a clickable preview URL when the terminal supports OSC 8 hyperlinks. Edit a source file and refresh the browser: the server detects changed build inputs and recompiles before serving the request.
-
-Options:
+The CLI prints the preview URL as an OSC 8 terminal link when supported. Edit HTML, refresh the browser, and the request rebuilds changed sources before serving.
 
 ```bash
 python3 site/build.py serve --host 0.0.0.0 --port 8080
@@ -42,16 +42,10 @@ python3 site/build.py serve --host 0.0.0.0 --port 8080
 - Build output directory: `.`
 - Root directory: `/`
 
-Cloudflare Pages publishes every push to `main` and can create preview deployments for pull requests.
-
-## Domain
-
-Configure both `pnyx.dev` and `www.pnyx.dev` as custom domains in Cloudflare Pages. Redirect `www` to the apex domain.
-
 ## Validation
 
-GitHub Actions validates required files, HTML anchors, root-relative assets, canonical sitemap references, and the machine-readable `llms.txt` entry point.
+GitHub Actions checks deterministic output, required files, HTML anchors, local assets, sitemap references, and `llms.txt`.
 
 ## Licensing
 
-The website follows the Pnyx project licensing model: software and executable material use EUPL-1.2; narrative and protocol content use CC BY-SA 4.0. See the canonical licensing policy in the [Pnyx repository](https://github.com/pikos-apikos/pnyx/blob/main/LICENSING.md).
+Software and executable material use EUPL-1.2; narrative and protocol content use CC BY-SA 4.0. See the [Pnyx licensing policy](https://github.com/pikos-apikos/pnyx/blob/main/LICENSING.md).

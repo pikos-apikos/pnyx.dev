@@ -4,24 +4,19 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f8f6f3">
-    <meta name="description" content="How a missing mobile link led pnyx.dev from copied navigation to a deterministic shared header and static page compiler.">
-    <meta property="og:title" content="One menu, generated everywhere — Pnyx journal">
-    <meta property="og:description" content="The public implementation record of the generated responsive navigation on pnyx.dev.">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://pnyx.dev/journal/generated-menu/">
+    <meta name="theme-color" content="#f4efe4">
+    <meta name="description" content="Pnyx is a public civic memory and deliberation system where citizens remain sovereign.">
+    <meta property="og:title" content="Pnyx">
+    <meta property="og:description" content="Public reasoning, human judgment, accountable action, and shared memory.">
+    <meta property="og:type" content="website">
     <meta property="og:image" content="https://pnyx.dev/assets/pnyx-horizon-social.jpg">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="canonical" href="https://pnyx.dev/journal/generated-menu/">
-    <link rel="alternate" hreflang="en" href="https://pnyx.dev/journal/generated-menu/">
-    <link rel="alternate" hreflang="el" href="https://pnyx.dev/el/journal/generated-menu/">
-    <link rel="alternate" hreflang="x-default" href="https://pnyx.dev/journal/generated-menu/">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/styles.css">
-    <title>One menu, generated everywhere — Pnyx journal</title>
+    <title>Pnyx</title>
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to the record</a>
+    <a class="skip-link" href="#main">Skip to main content</a>
     <header class="site-header">
       <a class="brand" href="/" aria-label="Pnyx home">
         <span class="brand-mark" aria-hidden="true">Π</span>
@@ -68,11 +63,11 @@
         <section>
           <p class="eyebrow">Implementation · Deterministic export</p>
           <h2>From copied HTML to a small page compiler</h2>
-          <p><code>site/build.py</code> now composes metadata and shared components around semantic content: <code>head → header/menu → content → footer</code>. English and Greek pages are exported as static HTML and remain committed so the exact deployable result is visible in review.</p>
+          <p><code>site/build.py</code> now discovers paired HTML source artifacts and includes them in one fixed order: <code>head → header/menu → content → footer</code>. Page routes come from the content directory. English and Greek pages are exported as static HTML and remain committed so the exact deployable result is visible in review.</p>
           <p><code>python3 site/build.py --check</code> rejects hand-edited or stale generated pages. The runtime site remains dependency-free; determinism is enforced at build time.</p>
           <ul>
             <li>One shared responsive header and navigation component.</li>
-            <li>Structured bilingual page definitions and semantic content sources.</li>
+            <li>Paired bilingual HTML sources whose paths define their routes.</li>
             <li>Accessible native burger behavior with desktop-first-load correctness.</li>
             <li>Byte-identical output for unchanged inputs.</li>
           </ul>

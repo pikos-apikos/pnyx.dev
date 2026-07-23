@@ -1,120 +1,58 @@
 # Site rules
 
-Build `pnyx.dev` as a deterministic static site.
+Build `pnyx.dev` from HTML files.
 
-Read `README.md` and `ARCHITECTURE.md` before changing the site.
+Read `README.md` and `ARCHITECTURE.md` first.
 
 ## Sources
 
-- Page registry and compiler: `site/build.py`
+- Head: `site/fragments/head.<lang>.html`
 - Header: `site/fragments/header.<lang>.html`
 - Footer: `site/fragments/footer.<lang>.html`
-- Page content: `site/content/*.html`
-- Shared styles: `styles.css`
-- Generated pages: `index.html`, `el/`, `journal/`
-- Architecture: `ARCHITECTURE.md`
+- Pages: `site/content/**/index.<lang>.html`
+- Builder: `site/build.py`
 
-Generated pages are outputs. Do not edit them by hand.
+The builder contains no page list, metadata, or site content.
 
-## Build a page
+A page path defines its route:
 
-1. Read the page metadata.
-2. Include the header for the page language.
-3. Include the page content.
-4. Include the footer for the page language.
-5. Write the static HTML.
+- `site/content/index.en.html` → `/index.html`
+- `site/content/index.el.html` → `/el/index.html`
+- `site/content/journal/index.en.html` → `/journal/index.html`
+- `site/content/journal/index.el.html` → `/el/journal/index.html`
 
-The order is always:
+Always create both language files. The builder discovers them.
+
+Generated pages are outputs. Do not edit them.
+
+## Build order
 
 ```text
-metadata → header → content → footer → static HTML
+head → header → content → footer
 ```
 
-## Shared navigation
-
-All pages in one language use the same header file.
-
-To change the menu:
-
-1. Edit `site/fragments/header.en.html`.
-2. Edit `site/fragments/header.el.html`.
-3. Rebuild every page.
-
-Do not create page-specific navigation.
-
-Journal links:
-
-- English: `/journal/`
-- Greek: `/el/journal/`
-
-The journal index lists every entry, newest first.
-Do not remove an older entry when adding a new one.
+The builder only reads, includes, and writes HTML files.
 
 ## Commands
 
-Build:
-
 ```bash
 python3 site/build.py
-```
-
-Check:
-
-```bash
 python3 site/build.py --check
-```
-
-Preview:
-
-```bash
 python3 site/build.py serve
 ```
 
-The command prints the preview URL.
-Edit a source file, then refresh the browser.
-The request rebuilds only when a source changed.
+For preview: edit a source file, refresh the printed URL, review the rebuilt page.
 
-Before finishing:
+## Rules
 
-1. Run the build.
-2. Run the check.
-3. Check local links and assets.
-4. Check English and Greek pages.
-5. Report changed files and validation results.
+- Keep English and Greek routes paired.
+- Keep old Journal entries.
+- List Journal entries newest first.
+- Keep state in files and Git.
+- Keep runtime static and offline.
+- Do not require a model, cloud service, network, or external runtime asset.
+- Do not state inference as observed fact.
+- Do not claim merged, deployed, or live without verification.
+- Run build and check before finishing.
 
-## Content rules
-
-- Never state an inference or generated result as an observed fact.
-- Keep sources beside supported claims.
-- Keep uncertainty, corrections, and rejected directions visible.
-- Models assist. Humans retain judgment.
-- Keep English and Greek structure aligned.
-- Use `Pnyx (pronounced "p-nix")` when pronunciation is needed.
-- Do not claim a commit is merged, deployed, or live without verification.
-
-## Site constraints
-
-- Keep runtime output static and dependency-free.
-- Do not require network access.
-- Do not add trackers or external runtime assets.
-- Preserve semantic HTML, keyboard access, contrast, and mobile layout.
-- Prefer existing design tokens and styles.
-- Keep unchanged inputs byte-identical.
-- Keep persistent state in files and Git.
-
-## Model constraints
-
-Assume a small local model may perform a task.
-
-- Give one component one small task.
-- Use short instructions.
-- Name exact input and output files.
-- Request structured output when possible.
-- Validate every output before the next step.
-- Prefer deterministic code over model reasoning.
-- Do not require a cloud model.
-- Do not assume internet access.
-
-Models are replaceable components.
-Artifacts are persistent state.
-The deterministic compiler is the final authority.
+Small models are replaceable components. HTML artifacts are the persistent state. The builder is deterministic plumbing.
